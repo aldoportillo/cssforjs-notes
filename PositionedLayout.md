@@ -356,3 +356,55 @@ function findCulprits(elem) {
 findCulprits(document.querySelector(selector));
 ```
 
+## Hidden Content
+
+There are multiple ways to hide content.
+
+One of them is display: none; this completely removes the element from the DOM. It is great for desktop to mobile design.
+
+Another one is visibility: hidden; Will hide an element but keep it in the DOM to be toggled back in its same position with visibility: visible;
+
+This property can also be toggled by children even if it is defined in the parent.
+
+Final one is Opacity. Opacity gives us a spectrum from 0-1 to define how visible we want our element. This doesn't really hide anything.
+
+How can we hide from screen readers? We dont want to add text to an icon but don't want it to show. 
+
+```jsx
+
+import { Settings, HelpCircle } from 'react-feather';
+
+const visuallyHidden = {
+  position: 'absolute',
+  overflow: 'hidden',
+  clip: 'rect(0 0 0 0)',
+  height: '1px',
+  width: '1px',
+  margin: '-1px',
+  padding: 0,
+  border: 0,
+}
+
+const App = () => (
+  <>
+    <button>
+      <span style={visuallyHidden}>
+        Contact support
+      </span>
+      <HelpCircle />
+    </button>
+    <button>
+      <span style={visuallyHidden}>
+        Access settings
+      </span>
+      <Settings />
+    </button>
+  </>
+);
+
+export default App;
+```
+
+We can also hide from screen readers using aria-hidden: true;
+
+
