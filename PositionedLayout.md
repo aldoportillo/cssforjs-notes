@@ -311,3 +311,48 @@ We can use the white-space property. The white-space property lets us  tweak how
 
 ### Overflow in Positioned Layout
 
+Containing blocks cannot contain fixed elements.
+
+## Sticky Positioning
+
+A sticky positioned element is an element that transitions from being relatively positioned to fixed upon reaching the edge of its container. The edge needs to be explicitly selected. 
+
+Technically: With sticky positioning, the value controls the minimum gap between the element and the edge of the viewport while the container is in-frame.
+
+Which means when you define the top. It's not an offset, its a stick point. This can be negative too.
+
+### A parent is hiding/managing overflow
+
+When we declare a parent's overflow as hidden/scroll/auto. That parent becomes a scroll container. A sticky positioned element sticks to the closest scroll container.
+
+Here is some JS code to help you find that selector that is creating that error.
+
+```javascript
+
+// Replace “.the-sticky-child” for a CSS selector
+// that matches the sticky-position element:
+const selector = '.the-sticky-child';
+
+function findCulprits(elem) {
+  if (!elem) {
+    throw new Error(
+      'Could not find element with that selector'
+    );
+  }
+
+  let parent = elem.parentElement;
+
+  while (parent) {
+    const { overflow } = getComputedStyle(parent);
+
+    if (['auto', 'scroll', 'hidden'].includes(overflow)) {
+      console.log(overflow, parent);
+    }
+
+    parent = parent.parentElement;
+  }
+}
+
+findCulprits(document.querySelector(selector));
+```
+
