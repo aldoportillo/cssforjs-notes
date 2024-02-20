@@ -41,7 +41,7 @@ const Button = styled.button /*This `` syntax is called a tagged template litera
 
 The styled object has methods for every HTML tag used within the body.
 
-## Installation
+### Installation
 
 ```bash
 
@@ -49,7 +49,7 @@ npm i styled-components
 
 ```
 
-## Global Styling in Styled Components
+### Global Styling in Styled Components
 
 First define a global styles module using styled-components
 
@@ -96,7 +96,7 @@ function App() {
 export default App;
 ```
 
-## Dynamic Styles
+### Dynamic Styles
 
 Styles that change.
 
@@ -119,3 +119,51 @@ const Wrapper = styled.button`
 
 ```
 
+### Composition
+
+We can have one component act like a base for another.
+
+```js
+import styled from 'styled-components';
+
+export default function App() {
+  return (
+    <PrimaryButton>Button</PrimaryButton>
+  );
+}
+
+const Base = styled.button`
+  font-size: 21px;
+`;
+
+const PrimaryButton = styled(Base)`
+  background: blue;
+  color: white;
+`;
+
+```
+
+### Dynamic Tags
+
+What if we want a component to function as a button or link depending on wether we choose to declare it in a form or as a link with the same styles.
+
+```js
+
+import { Link } from 'react-router-dom';
+
+function Button({ href, children }) {
+  return (
+    <Wrapper to={href} as={href ? Link : 'button'}>
+      {children}
+    </Wrapper>
+  );
+}
+
+const Wrapper = styled.button`
+  /* styles */
+`;
+
+render(<Button href="/">Hello</Button>);
+
+
+```
