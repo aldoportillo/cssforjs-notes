@@ -167,3 +167,25 @@ render(<Button href="/">Hello</Button>);
 
 
 ```
+
+### Single Source of Styles
+
+When it comes to having styled components we can reach into a child and edit the child's properties through the parent; however, when we open up our child component code. We won't know what is going on if we defined a certain property but it is different because a parent is modifying it.
+
+This means that we have to reference the style the parent is applying in that child component, and we do this as follows.
+
+```js
+
+const TextLink = styled.a`
+  color: blue;
+  text-decoration: none;
+
+  ${QuoteContent} & { //Contextual Styles
+    color: black;
+    text-decoration: underline;
+  }
+`;
+
+```
+
+Here we can see that every TextLink outside of QuoteContent will be blue except for the ones inside of QuoteContent.
