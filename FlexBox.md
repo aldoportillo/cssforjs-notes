@@ -30,3 +30,221 @@ Best way to think of it is that flex: 1; will distribute space evenly between ev
 #### Constraints
 
 We can also implement constrains when utilizing the flex property. Such as min-width: and max-width:.
+
+### Wrapping
+
+```css
+
+  main {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  article {
+    flex: 1 1 150px;
+    max-width: 250px;
+  }
+  article img {
+    width: 100%;
+  }
+```
+
+When it comes to our items overflowing our stretch container and creating a scroll container as a result. We can add a flex-wrap for better UI. Imagine we have a card named article with an image. Above we set the image's width to be 100% of the parent to remove its native size. We add a flex-wrap declaration to our flex container as well; however, the last element still spans the full width. Well we can kinda fix this by adding a flex-basis to our article card as opposed to getting it to default to 0.
+
+### Content vs. Items
+
+So whats the deal with align-content? How does it defer from align-items.
+
+The best way to see the difference is to experiment a bit. align-items aligns the content with respect to the container and align-content aligns them with respect to the largest item. (In row its the largest item's height. In Column, its the largest item's width)
+
+### Groups and Gaps
+
+For the longest time, when using flex box layout, I would create a lot of extra divs. This is because I didn't understand the box model and positioned layout properly. One of the main problems was that I had a flex container and within that container I had 3 items. One needed to be in the start and the last two at the end, so I would do something like:
+
+```react
+
+ import styled from 'styled-components';
+
+function Header() {
+  return (
+    <Wrapper>
+      <Logo>My Thing</Logo>
+      <UselessDiv>
+        <AuthButton>Log in</AuthButton>
+        <AuthButton>Sign up</AuthButton>
+      </UselessDiv>
+    </Wrapper>
+  );
+}
+
+const UselessDiv = styled.div``
+
+const Wrapper = styled.header`
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+`;
+
+const Logo = styled.a`
+  font-size: 1.5rem;
+`;
+
+const AuthButton = styled.button``
+
+export default Header;
+
+```
+
+This makes me pollute my markup. Luckily we can use margin auto since auto is a greedy value. Also note that I added space between the flex items with gap. 
+
+```react
+
+import styled from 'styled-components';
+
+function Header() {
+  return (
+    <Wrapper>
+      <Logo>My Thing</Logo>
+      <AuthButton>Log in</AuthButton>
+      <AuthButton>Sign up</AuthButton>
+    </Wrapper>
+  );
+}
+
+const Wrapper = styled.header`
+  display: flex;
+  gap: 8px;
+`;
+
+const Logo = styled.a`
+  font-size: 1.5rem;
+  margin-right: auto;
+`;
+
+const AuthButton = styled.button``
+
+export default Header;
+
+```
+
+### Ordering
+
+We have seen flex-direction: column and reverse and although this does orders elements different on the page. The DOM for the screen readers stays the same.
+
+We have other meachanisims:
+
+#### Order
+
+Similar to z-index. The less the number the first that it displays. order: 1; > order: 2;
+
+#### wrap-reverse
+
+Causes elements to wrap upwards rather than downwards
+
+#### tab-index
+
+For accessability. Setting this is similar to ordering; however, it selects which elements will be tabbed through first but also if we set it to -1 the the element would be un-tab-able.
+
+### Flex box interactions
+
+#### Positioned Flex Children
+
+An element cannot participate in multiple layout modes. Setting an element within a flex container as fixed. Will take it out of the flow order. WHat if we use relative since relative positioning keeps elements in their dom order? Well we can do this in order to make that child element a container for positioned elements.
+
+#### Margin Collapse
+
+As we touched on in the margin collapse lesson. Flex items do not collapse margins.
+
+#### Flex box and z-index
+
+Flex-box supports z-index as well!
+
+## Recipes
+
+### Holy Grail Layout
+
+```html
+
+<style>
+  .wrapper{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .middle{
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .middle > nav{
+    flex: 1;
+  }
+
+  .middle > aside{
+    flex: 1;
+  }
+
+  .middle > main{
+    flex: 2;
+  }
+
+
+  
+</style>
+
+<div class="wrapper">
+  <header class="box">Header</header>
+  <section class="middle">
+    <nav class="box">Nav</nav>
+    <main class="box">Main Content</main>
+    <aside class="box">Ad unit</aside>
+  </section>
+  <footer class="box">Footer</footer>
+</div>
+
+```
+
+### Sticky Sidebar
+
+```html
+
+<style>
+  .wrapper {
+    display: flex;
+    
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+  }
+
+  main {
+    flex: 1;
+  }
+</style>
+
+<section class="wrapper">
+  <nav class="box">
+    <h2>Navigation</h2>
+    <ul>
+      <li>Section One</li>
+      <li>Section Two</li>
+    </ul>
+  </nav>
+  <main class="box">
+    <p>This container contains random stuff to increase its height.</p>
+    <img src="https://courses.joshwcomeau.com/cfj-mats/cat-300px.jpg" />
+    <p>Normally, a blog post would exist in this container.</p>
+    <img src="https://courses.joshwcomeau.com/cfj-mats/dog-one-300px.jpg" />
+    <p>This container contains random stuff to increase its height.</p>
+    <img src="https://courses.joshwcomeau.com/cfj-mats/cat-two-300px.jpg" />
+    <p>Normally, a blog post would exist in this container.</p>
+    <img src="https://courses.joshwcomeau.com/cfj-mats/dog-two-300px.jpg" />
+  </main>
+</section>
+
+```
+
